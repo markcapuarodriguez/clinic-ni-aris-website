@@ -1,0 +1,627 @@
+# Product Requirements Document (PRD)
+
+## Simple Appointment Booking Website (Version 1.0)
+
+---
+
+# 1. Project Overview
+
+## Project Name
+
+**Clinic Appointment Booking System**
+
+## Vision
+
+Build a simple, clean, and intuitive appointment booking website specifically designed for **elderly Filipino patients with little to no computer experience**.
+
+The system should enable patients to book appointments in under one minute while giving clinic staff an easy way to manage schedules and appointments.
+
+The website should prioritize **simplicity over features**.
+
+---
+
+# 2. Objectives
+
+The system should allow patients to:
+
+* View available appointment dates.
+* Book an appointment quickly.
+* Receive an appointment confirmation with a downloadable QR code.
+* Print the appointment if desired.
+
+The system should allow administrators to:
+
+* Manage clinic schedules.
+* Manage appointment bookings.
+* Update announcements.
+* Check in patients using QR codes.
+
+---
+
+# 3. Target Users
+
+## Primary Users
+
+* Filipino patients
+* Senior citizens
+* First-time computer users
+* Mobile phone users
+* Desktop users
+
+Characteristics:
+
+* Limited computer knowledge
+* Limited English proficiency
+* May have poor eyesight
+* Prefer simple interfaces
+
+---
+
+## Secondary Users
+
+Clinic staff
+
+Responsibilities:
+
+* Manage schedules
+* Manage appointments
+* Verify QR codes
+* Update announcements
+
+---
+
+# 4. Design Principles
+
+The application should be:
+
+* Extremely simple
+* Large readable text
+* High contrast
+* Minimal distractions
+* Fast loading
+* Mobile responsive
+* Entirely in Tagalog
+
+---
+
+# 5. User Journey
+
+### Patient
+
+Open website
+
+↓
+
+Read announcement
+
+↓
+
+Choose appointment date
+
+↓
+
+Choose available time
+
+↓
+
+Enter personal information
+
+↓
+
+Confirm booking
+
+↓
+
+Receive confirmation with QR code
+
+↓
+
+Download or print QR code
+
+---
+
+### Administrator
+
+Login
+
+↓
+
+View dashboard
+
+↓
+
+Manage schedules
+
+↓
+
+Manage appointments
+
+↓
+
+Scan patient QR code
+
+↓
+
+Mark patient as checked in
+
+---
+
+# 6. Homepage Layout
+
+```
+----------------------------------------------------
+
+Clinic Logo
+
+Clinic Name
+
+----------------------------------------------------
+
+📢 Announcement Banner
+
+----------------------------------------------------
+
+        LARGE CALENDAR
+
+----------------------------------------------------
+
+Available Schedule
+
+----------------------------------------------------
+
+Appointment Form
+
+----------------------------------------------------
+```
+
+The calendar should always remain the center of attention.
+
+---
+
+# 7. Functional Requirements
+
+## 7.1 Announcement Banner
+
+Located at the top.
+
+Administrator editable.
+
+Example:
+
+"Paalala: Walang klinika tuwing Linggo."
+
+---
+
+## 7.2 Calendar
+
+The calendar must:
+
+* Display current month
+* Navigate previous/next month
+* Highlight available dates
+* Disable unavailable dates
+* Disable past dates
+* Be responsive
+
+---
+
+## 7.3 Time Slot Selection
+
+After selecting a date:
+
+Display only available appointment times.
+
+Example:
+
+* 8:00 AM
+* 8:30 AM
+* 9:00 AM
+* 9:30 AM
+
+Unavailable times cannot be selected.
+
+---
+
+## 7.4 Appointment Form
+
+Required Fields
+
+* Pangalan
+* Numero ng Telepono
+* Napiling Oras
+* Dahilan ng Pagbisita
+
+Optional
+
+* Email
+
+Button
+
+**Mag-book**
+
+---
+
+## 7.5 Booking Confirmation
+
+Display:
+
+✅ Appointment Confirmed
+
+Patient Name
+
+Appointment Date
+
+Appointment Time
+
+Reference Number
+
+Unique QR Code
+
+Buttons:
+
+* I-download ang QR Code
+* I-print ang Appointment
+
+---
+
+## 7.6 QR Code
+
+Every booking automatically generates a QR code.
+
+The QR code should contain:
+
+* Appointment ID
+* Patient Name
+* Appointment Date
+* Appointment Time
+
+Example payload:
+
+```
+Appointment ID: APPT000145
+Name: Juan Dela Cruz
+Date: July 20 2026
+Time: 9:00 AM
+```
+
+QR code requirements:
+
+* Free
+* Downloadable
+* Printable
+* Unique
+
+---
+
+# 8. Administrator Dashboard
+
+## Dashboard Overview
+
+Display:
+
+Today's Appointments
+
+Upcoming Appointments
+
+Completed Appointments
+
+Cancelled Appointments
+
+Available Slots
+
+---
+
+## Schedule Manager
+
+Administrator can:
+
+Add schedules
+
+Delete schedules
+
+Close dates
+
+Open dates
+
+Edit available times
+
+---
+
+## Appointment Manager
+
+Display table:
+
+| Patient | Date | Time | Phone | Status |
+| ------- | ---- | ---- | ----- | ------ |
+
+Actions:
+
+Confirm
+
+Cancel
+
+Delete
+
+Check-in
+
+---
+
+## QR Code Scanner
+
+Administrator can scan the patient's QR code.
+
+After scanning:
+
+Display:
+
+Patient Name
+
+Appointment Date
+
+Appointment Time
+
+Status
+
+Button:
+
+✔ Check In
+
+---
+
+## Announcement Manager
+
+Simple text editor.
+
+One Save button.
+
+Changes appear immediately on homepage.
+
+---
+
+# 9. UI Requirements
+
+Theme:
+
+Modern
+
+Minimal
+
+Professional
+
+Friendly
+
+---
+
+Colors
+
+Background:
+
+White
+
+Primary:
+
+Blue
+
+Success:
+
+Green
+
+Error:
+
+Red
+
+---
+
+Typography
+
+Minimum body text:
+
+18px
+
+Buttons:
+
+Large
+
+High contrast
+
+Rounded corners
+
+---
+
+Spacing
+
+Lots of whitespace.
+
+No clutter.
+
+---
+
+# 10. Accessibility
+
+Support:
+
+Large fonts
+
+Keyboard navigation
+
+Responsive layout
+
+Touch-friendly buttons
+
+Screen readers
+
+High contrast
+
+---
+
+# 11. Booking Rules
+
+Patient cannot:
+
+Book past dates
+
+Book unavailable dates
+
+Double book
+
+Leave required fields empty
+
+---
+
+Maximum appointments per time slot:
+
+Administrator configurable.
+
+---
+
+# 12. Data Storage
+
+Version 1
+
+Browser Local Storage
+
+Store:
+
+Appointments
+
+Schedules
+
+Announcements
+
+---
+
+Future
+
+Supabase
+
+Firebase
+
+PostgreSQL
+
+---
+
+# 13. Technology Stack
+
+Frontend
+
+* React
+* TypeScript
+* Vite
+* Tailwind CSS
+* shadcn/ui
+
+Libraries
+
+* React Hook Form
+* Zod
+* date-fns
+* qrcode
+* Lucide React
+
+Storage
+
+Local Storage
+
+---
+
+# 14. Folder Structure
+
+```
+src
+│
+├── components
+├── pages
+├── admin
+├── hooks
+├── services
+├── types
+├── utils
+├── assets
+└── App.tsx
+```
+
+---
+
+# 15. Performance Requirements
+
+* Load within 2 seconds
+* Responsive on all screen sizes
+* No page reload during booking
+* Smooth navigation
+* Mobile-friendly
+
+---
+
+# 16. Security
+
+Administrator login required.
+
+Patient information stored locally.
+
+Basic form validation.
+
+Prevent duplicate bookings.
+
+---
+
+# 17. Future Enhancements
+
+* Google Calendar integration
+* Email reminders
+* Multiple doctors
+* Holiday scheduling
+* Patient history
+* Reports and analytics
+* Dark mode
+* Online payments
+* Multi-branch clinic support
+
+---
+
+# 18. Out of Scope (Version 1)
+
+* SMS notifications
+* Online payment
+* Insurance claims
+* Telemedicine
+* Electronic Medical Records (EMR)
+* Patient accounts
+* Prescription management
+
+---
+
+# 19. Acceptance Criteria
+
+The application is considered complete when:
+
+### Patient
+
+* Can view available dates from a large, centered calendar.
+* Can select only available future dates and times.
+* Can complete a booking in four steps or fewer.
+* Receives a confirmation page with a unique QR code.
+* Can download or print the QR code.
+
+### Administrator
+
+* Can log in securely.
+* Can manage schedules and appointments.
+* Can update announcements.
+* Can scan patient QR codes and mark appointments as checked in.
+
+### General
+
+* Entire interface is in Tagalog.
+* Fully responsive on desktop, tablet, and mobile.
+* Uses Local Storage for data persistence.
+* QR code generation and verification require no paid services.
+* Optimized for elderly users with large text, clear navigation, and minimal visual clutter.
+
+---
+
+## Success Metrics
+
+* A first-time user can complete a booking in **under 60 seconds**.
+* At least **90% of users** can finish a booking without assistance during usability testing.
+* Staff can locate, verify, and check in a patient in **under 10 seconds** using the QR code.
+* The interface remains simple enough that every core action (book, confirm, manage appointments) can be completed with **three or fewer primary clicks** after reaching the relevant screen.

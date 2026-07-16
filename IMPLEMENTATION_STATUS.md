@@ -1,0 +1,22 @@
+# MVP Implementation Status
+
+## Completed
+
+- Step 1: Foundation
+  - Appointment, patient, schedule, and clinic setting types
+  - Versioned browser-local storage repository
+  - Default Tagalog clinic announcement and weekly schedule
+  - Date, capacity, availability, duplicate-booking, and form rules
+  - Unique appointment ID and reference-number helpers
+  - Step 2: Patient booking page
+  - Clinic announcement, large calendar, available-time selection, patient form, validation, and saved booking
+  - Step 3: Confirmation and QR code
+  - Unique QR payload, QR download, appointment details, and print-friendly copy
+  - Step 4: Staff access and dashboard
+  - Protected staff page, dashboard totals, upcoming appointments, available-slot count, and sign out
+  - Step 5: Staff management tools
+  - Appointment status actions and deletion, weekly schedules, slot capacity, closed dates, announcement editing, QR camera/manual lookup, and check-in
+  - Step 6: Accessibility and production readiness
+  - Keyboard skip links and focus states, mobile-friendly controls, reduced-motion and high-contrast support, Tagalog review, email validation, accessible calendar/table semantics, and branded social preview
+  - Final validation
+  - ESLint and production build pass; patient booking, QR display, download/print controls, and browser console verified
