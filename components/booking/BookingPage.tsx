@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { AppointmentCalendar } from "./AppointmentCalendar";
 import { BookingConfirmation } from "./BookingConfirmation";
@@ -83,7 +84,8 @@ export function BookingPage() {
       <a className="skip-link" href="#main-content">Lumaktaw sa pagpapa-iskedyul</a>
       <header className="clinic-header">
         <div className="brand-mark" aria-hidden="true">R</div>
-        <div><p className="clinic-label">Klinika para sa buong pamilya</p><h1>{data.settings.clinicName}</h1><p className="clinic-address">{data.settings.clinicAddress} <a href="https://www.google.com/maps/search/?api=1&query=33%20A.%20Dela%20Cruz%20Street%2C%20Tayabas%20City%2C%20Quezon" target="_blank" rel="noreferrer" aria-label="Buksan ang address ng Reyes Medical Clinic sa Google Maps">Buksan sa Google Maps</a></p></div>
+        <div className="clinic-identity"><p className="clinic-label">Klinika para sa buong pamilya</p><h1>{data.settings.clinicName}</h1><p className="clinic-address">{data.settings.clinicAddress} <a href="https://www.google.com/maps/search/?api=1&query=33%20A.%20Dela%20Cruz%20Street%2C%20Tayabas%20City%2C%20Quezon" target="_blank" rel="noreferrer" aria-label="Buksan ang address ng Reyes Medical Clinic sa Google Maps">Buksan sa Google Maps</a></p></div>
+        <Image className="doctor-photo" src="/reyes-doctor.png" alt="Doktor ng Reyes Medical Clinic" width={150} height={150} priority />
       </header>
 
       <div className="page-shell" id="main-content">
