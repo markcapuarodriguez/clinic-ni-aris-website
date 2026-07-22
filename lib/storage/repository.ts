@@ -1,9 +1,9 @@
 import type { Appointment } from "@/types/appointment";
 import type { ClinicSettings } from "@/types/schedule";
-import { DEFAULT_CLINIC_SETTINGS } from "./seed";
+import { DEFAULT_CLINIC_SETTINGS, REGULAR_WEEKLY_HOURS } from "./seed";
 
 const STORAGE_KEY = "clinic-appointment-booking";
-const STORAGE_VERSION = 1;
+const STORAGE_VERSION = 2;
 
 export interface ClinicData {
   version: number;
@@ -25,6 +25,24 @@ function isClinicData(value: unknown): value is ClinicData {
   return data.version === STORAGE_VERSION && Array.isArray(data.appointments) && Boolean(data.settings?.schedule);
 }
 
+function migrateClinicData(value: unknown): ClinicData | null {
+  if (!value || typeof value !== "object") return null;
+  const data = value as Partial<ClinicData>;
+  if (data.version !== 1 || !Array.isArray(data.appointments) || !data.settings?.schedule) return null;
+
+  return {
+    version: STORAGE_VERSION,
+    appointments: data.appointments,
+    settings: {
+      ...data.settings,
+      schedule: {
+        ...data.settings.schedule,
+        weeklyHours: structuredClone(REGULAR_WEEKLY_HOURS),
+      },
+    },
+  };
+}
+
 export function loadClinicData(): ClinicData {
   if (typeof window === "undefined") return createInitialData();
   const saved = window.localStorage.getItem(STORAGE_KEY);
@@ -35,7 +53,13 @@ export function loadClinicData(): ClinicData {
   }
   try {
     const parsed: unknown = JSON.parse(saved);
-    return isClinicData(parsed) ? parsed : createInitialData();
+    if (isClinicData(parsed)) return parsed;
+    const migrated = migrateClinicData(parsed);
+    if (migrated) {
+      saveClinicData(migrated);
+      return migrated;
+    }
+    return createInitialData();
   } catch {
     return createInitialData();
   }
