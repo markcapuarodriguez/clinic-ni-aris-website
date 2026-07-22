@@ -18,12 +18,12 @@ export async function generateMetadata(): Promise<Metadata> {
   const host = requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host") ?? "localhost";
   const protocol = requestHeaders.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
   const origin = `${protocol}://${host}`;
-  const title = "Klinika ni Dok Aris | Magpa-iskedyul ng Pagbisita";
-  const description = "Mabilis at madaling pagpapa-iskedyul ng pagbisita sa Klinika ni Dok Aris.";
+  const title = "Reyes Medical Clinic | Magpa-iskedyul ng Pagbisita";
+  const description = "Mabilis at madaling pagpapa-iskedyul ng pagbisita sa Reyes Medical Clinic sa Tayabas City, Quezon.";
   return {
     title,
     description,
-    openGraph: { title, description, type: "website", images: [{ url: new URL("/og.png", origin).toString(), width: 1536, height: 1024, alt: "Klinika ni Dok Aris" }] },
+    openGraph: { title, description, type: "website", images: [{ url: new URL("/og.png", origin).toString(), width: 1536, height: 1024, alt: "Reyes Medical Clinic" }] },
     twitter: { card: "summary_large_image", title, description, images: [new URL("/og.png", origin).toString()] },
   };
 }

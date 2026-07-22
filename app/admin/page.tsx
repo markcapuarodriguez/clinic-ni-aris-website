@@ -5,8 +5,8 @@ import { chatGPTSignOutPath, requireChatGPTUser } from "@/app/chatgpt-auth";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Talaan ng Kawani | Klinika ni Dok Aris",
-  description: "Pribadong talaan para sa mga kawani ng Klinika ni Dok Aris.",
+  title: "Talaan ng Kawani | Reyes Medical Clinic",
+  description: "Pribadong talaan para sa mga kawani ng Reyes Medical Clinic.",
 };
 
 async function ProtectedDashboard() {

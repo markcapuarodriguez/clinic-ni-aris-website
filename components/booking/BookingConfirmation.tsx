@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { createQrImage } from "@/lib/appointments/qr";
 import type { Appointment } from "@/types/appointment";
+import { CLINIC_ADDRESS, CLINIC_NAME } from "@/lib/storage/seed";
 
 interface Props {
   appointment: Appointment;
@@ -51,7 +52,7 @@ export function BookingConfirmation({ appointment, onStartAgain, displayDate, di
         <button type="button" className="secondary-button" onClick={() => window.print()}>I-print ang tala ng pagbisita</button>
       </div>
       <button type="button" className="text-button no-print" onClick={onStartAgain}>Magpa-iskedyul ng panibagong pagbisita</button>
-      <p className="print-only print-footer">Klinika ni Dok Aris • Dalhin ang kopyang ito sa inyong appointment.</p>
+      <p className="print-only print-footer">{CLINIC_NAME} • {CLINIC_ADDRESS} • Dalhin ang kopyang ito sa inyong appointment.</p>
     </section>
   );
 }

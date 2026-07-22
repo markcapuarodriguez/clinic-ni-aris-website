@@ -1,9 +1,9 @@
 import type { Appointment } from "@/types/appointment";
 import type { ClinicSettings } from "@/types/schedule";
-import { DEFAULT_CLINIC_SETTINGS, REGULAR_WEEKLY_HOURS } from "./seed";
+import { CLINIC_ADDRESS, CLINIC_NAME, DEFAULT_CLINIC_SETTINGS, REGULAR_WEEKLY_HOURS } from "./seed";
 
 const STORAGE_KEY = "clinic-appointment-booking";
-const STORAGE_VERSION = 2;
+const STORAGE_VERSION = 3;
 
 export interface ClinicData {
   version: number;
@@ -28,16 +28,18 @@ function isClinicData(value: unknown): value is ClinicData {
 function migrateClinicData(value: unknown): ClinicData | null {
   if (!value || typeof value !== "object") return null;
   const data = value as Partial<ClinicData>;
-  if (data.version !== 1 || !Array.isArray(data.appointments) || !data.settings?.schedule) return null;
+  if (![1, 2].includes(data.version ?? 0) || !Array.isArray(data.appointments) || !data.settings?.schedule) return null;
 
   return {
     version: STORAGE_VERSION,
     appointments: data.appointments,
     settings: {
       ...data.settings,
+      clinicName: CLINIC_NAME,
+      clinicAddress: CLINIC_ADDRESS,
       schedule: {
         ...data.settings.schedule,
-        weeklyHours: structuredClone(REGULAR_WEEKLY_HOURS),
+        weeklyHours: data.version === 1 ? structuredClone(REGULAR_WEEKLY_HOURS) : data.settings.schedule.weeklyHours,
       },
     },
   };

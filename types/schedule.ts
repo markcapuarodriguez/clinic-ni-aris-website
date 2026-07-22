@@ -8,6 +8,7 @@ export interface ClinicSchedule {
 
 export interface ClinicSettings {
   clinicName: string;
+  clinicAddress: string;
   announcement: string;
   schedule: ClinicSchedule;
 }

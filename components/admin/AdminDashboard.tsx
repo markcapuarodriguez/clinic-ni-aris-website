@@ -28,7 +28,7 @@ function countAvailableSlots(data: ClinicData, days = 30): number {
 }
 
 export function AdminDashboard({ staffName, signOutPath }: Props) {
-  const [data, setData] = useState<ClinicData>({ version: 1, appointments: [], settings: DEFAULT_CLINIC_SETTINGS });
+  const [data, setData] = useState<ClinicData>({ version: 3, appointments: [], settings: DEFAULT_CLINIC_SETTINGS });
   const [tab, setTab] = useState<AdminTab>("dashboard");
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => setData(loadClinicData()));
@@ -69,7 +69,7 @@ export function AdminDashboard({ staffName, signOutPath }: Props) {
   return (
     <main className="admin-page">
       <a className="skip-link" href="#admin-content">Lumaktaw sa pangunahing nilalaman</a>
-      <header className="admin-header"><div><p className="clinic-label">Klinika ni Dok Aris</p><h1>Talaan ng Kawani</h1></div><div className="staff-account"><span>Nakapasok bilang<br /><strong>{staffName}</strong></span><a href={signOutPath}>Lumabas</a></div></header>
+      <header className="admin-header"><div><p className="clinic-label">{data.settings.clinicName}</p><h1>Talaan ng Kawani</h1></div><div className="staff-account"><span>Nakapasok bilang<br /><strong>{staffName}</strong></span><a href={signOutPath}>Lumabas</a></div></header>
       <div className="admin-shell">
         <nav className="admin-nav" aria-label="Pangunahing navigation">
           {navItems.map((item) => <button type="button" key={item.id} className={tab === item.id ? "active" : ""} aria-current={tab === item.id ? "page" : undefined} onClick={() => setTab(item.id)}>{item.label}</button>)}

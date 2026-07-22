@@ -14,8 +14,12 @@ export const REGULAR_WEEKLY_HOURS = {
   6: REGULAR_CLINIC_TIMES,
 } as const;
 
+export const CLINIC_NAME = "Reyes Medical Clinic";
+export const CLINIC_ADDRESS = "33 A. Dela Cruz Street, Tayabas City, Quezon";
+
 export const DEFAULT_CLINIC_SETTINGS: ClinicSettings = {
-  clinicName: "Klinika ni Dok Aris",
+  clinicName: CLINIC_NAME,
+  clinicAddress: CLINIC_ADDRESS,
   announcement: "Paalala: Walang klinika tuwing Linggo.",
   schedule: {
     weeklyHours: REGULAR_WEEKLY_HOURS,

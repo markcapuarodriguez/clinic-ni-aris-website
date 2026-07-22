@@ -22,3 +22,5 @@
   - ESLint and production build pass; patient booking, QR display, download/print controls, and browser console verified
   - Schedule revision
   - Monday through Saturday, 8:00 AM to 5:00 PM, with 30-minute appointment starts and a 12:00 PM to 2:00 PM break
+  - Clinic branding and location
+  - Reyes Medical Clinic, 33 A. Dela Cruz Street, Tayabas City, Quezon, with a direct Google Maps shortcut

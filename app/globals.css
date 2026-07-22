@@ -15,6 +15,8 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, a:focus-visib
 .clinic-header { min-height: 110px; display: flex; align-items: center; gap: 18px; padding: 22px max(24px, calc((100vw - 1180px) / 2)); color: white; background: linear-gradient(120deg, #063b70, #0875c9); }
 .brand-mark { width: 64px; height: 64px; flex: 0 0 64px; display: grid; place-items: center; border: 3px solid white; border-radius: 50%; font-size: 32px; font-weight: 800; }
 .clinic-header h1 { margin: 1px 0 0; font-size: clamp(28px, 4vw, 40px); line-height: 1.1; }
+.clinic-address { margin: 7px 0 0; font-size: 15px; line-height: 1.45; }
+.clinic-address a { display: inline-block; margin-left: 8px; color: white; font-weight: 800; text-underline-offset: 3px; }
 .clinic-label { margin: 0; font-size: 16px; font-weight: 700; opacity: .88; }
 .page-shell { width: min(1180px, calc(100% - 32px)); margin: 30px auto 60px; }
 .announcement { display: flex; gap: 16px; align-items: center; padding: 18px 22px; margin-bottom: 24px; border: 2px solid #e1b84d; border-radius: 14px; color: #5b4100; background: #fff8df; }
@@ -216,7 +218,7 @@ td small { display: block; color: var(--muted); }
   .clinic-header, .announcement, footer, .no-print { display: none !important; }
   .page-shell { width: 100%; margin: 0; }
   .print-card { max-width: none; margin: 0; padding: 0; border: 0; box-shadow: none; }
-  .print-card::before { content: "Klinika ni Dok Aris"; display: block; margin-bottom: 6px; color: #063b70; font-size: 24pt; font-weight: 800; }
+  .print-card::before { content: "Reyes Medical Clinic"; display: block; margin-bottom: 6px; color: #063b70; font-size: 24pt; font-weight: 800; }
   .confirmation-layout { grid-template-columns: 1fr 260px; }
   .qr-panel { break-inside: avoid; }
   .print-only { display: block; }

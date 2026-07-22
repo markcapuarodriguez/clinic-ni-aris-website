@@ -24,7 +24,7 @@ function displayTime(time: string): string {
 }
 
 export function BookingPage() {
-  const [data, setData] = useState<ClinicData>({ version: 1, appointments: [], settings: DEFAULT_CLINIC_SETTINGS });
+  const [data, setData] = useState<ClinicData>({ version: 3, appointments: [], settings: DEFAULT_CLINIC_SETTINGS });
   const [month, setMonth] = useState(() => { const now = new Date(); return new Date(now.getFullYear(), now.getMonth(), 1); });
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
@@ -82,8 +82,8 @@ export function BookingPage() {
     <main>
       <a className="skip-link" href="#main-content">Lumaktaw sa pagpapa-iskedyul</a>
       <header className="clinic-header">
-        <div className="brand-mark" aria-hidden="true">A</div>
-        <div><p className="clinic-label">Klinika para sa buong pamilya</p><h1>{data.settings.clinicName}</h1></div>
+        <div className="brand-mark" aria-hidden="true">R</div>
+        <div><p className="clinic-label">Klinika para sa buong pamilya</p><h1>{data.settings.clinicName}</h1><p className="clinic-address">{data.settings.clinicAddress} <a href="https://www.google.com/maps/search/?api=1&query=33%20A.%20Dela%20Cruz%20Street%2C%20Tayabas%20City%2C%20Quezon" target="_blank" rel="noreferrer" aria-label="Buksan ang address ng Reyes Medical Clinic sa Google Maps">Buksan sa Google Maps</a></p></div>
       </header>
 
       <div className="page-shell" id="main-content">
@@ -126,7 +126,7 @@ export function BookingPage() {
           </div>
         )}
       </div>
-      <footer><p>© 2026 Klinika ni Dok Aris</p><p>Para sa agarang tulong, tumawag sa pinakamalapit na serbisyong pang-emerhensiya.</p><Link href="/admin">Para sa kawani</Link></footer>
+      <footer><p>© 2026 {data.settings.clinicName}</p><p>{data.settings.clinicAddress}</p><p>Para sa agarang tulong, tumawag sa pinakamalapit na serbisyong pang-emerhensiya.</p><Link href="/admin">Para sa kawani</Link></footer>
     </main>
   );
 }
