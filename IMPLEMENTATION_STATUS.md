@@ -28,3 +28,5 @@
   - Responsive doctor portrait displayed prominently in the patient-page header
   - Cloud persistence
   - Appointments and clinic settings stored in the connected Convex deployment instead of browser-local storage
+  - Staff password protection
+  - The staff dashboard and its server actions require both ChatGPT sign-in and a private clinic password; successful access lasts for eight hours

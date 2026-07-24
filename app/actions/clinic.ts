@@ -1,6 +1,7 @@
 "use server";
 
 import { getChatGPTUser } from "@/app/chatgpt-auth";
+import { hasValidStaffSession } from "@/app/admin/staff-session";
 import {
   addAppointmentToConvex,
   deleteAppointmentFromConvex,
@@ -61,5 +62,8 @@ export async function importLegacyClinicData(data: {
 }
 
 async function requireStaff() {
-  if (!(await getChatGPTUser())) throw new Error("Unauthorized");
+  const user = await getChatGPTUser();
+  if (!user || !(await hasValidStaffSession(user.email))) {
+    throw new Error("Unauthorized");
+  }
 }
