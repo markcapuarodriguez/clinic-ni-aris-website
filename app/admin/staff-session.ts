@@ -2,12 +2,12 @@ import "server-only";
 
 import { cookies } from "next/headers";
 
-const STAFF_COOKIE = "reyes_staff_session";
+export const STAFF_COOKIE_NAME = "reyes_staff_session";
 const SESSION_LIFETIME_SECONDS = 8 * 60 * 60;
 const encoder = new TextEncoder();
 
 export async function hasValidStaffSession(email: string): Promise<boolean> {
-  const token = (await cookies()).get(STAFF_COOKIE)?.value;
+  const token = (await cookies()).get(STAFF_COOKIE_NAME)?.value;
   if (!token) return false;
 
   const separator = token.indexOf(".");
@@ -24,7 +24,7 @@ export async function startStaffSession(email: string): Promise<void> {
   const expiresAt = Date.now() + SESSION_LIFETIME_SECONDS * 1000;
   const token = await createSessionToken(email, expiresAt);
 
-  (await cookies()).set(STAFF_COOKIE, token, {
+  (await cookies()).set(STAFF_COOKIE_NAME, token, {
     httpOnly: true,
     maxAge: SESSION_LIFETIME_SECONDS,
     path: "/admin",

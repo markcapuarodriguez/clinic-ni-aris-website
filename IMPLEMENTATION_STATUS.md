@@ -32,3 +32,5 @@
   - The staff dashboard and its server actions require both ChatGPT sign-in and a private clinic password; successful access lasts for eight hours
   - Cellphone browser support
   - Responsive clinic header, calendars, forms, confirmation controls, staff navigation, dashboard cards, tables, and touch-friendly actions for small screens
+  - Cloudflare deployment
+  - Cloudflare Pages advanced-mode packaging, Node compatibility, and password-only staff identity fallback for deployments without ChatGPT identity headers

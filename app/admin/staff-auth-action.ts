@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { getChatGPTUser } from "@/app/chatgpt-auth";
+import { getStaffUser } from "@/app/chatgpt-auth";
 import {
   isCorrectStaffPassword,
   startStaffSession,
@@ -15,7 +15,7 @@ export async function authenticateStaff(
   _previousState: StaffPasswordState,
   formData: FormData,
 ): Promise<StaffPasswordState> {
-  const user = await getChatGPTUser();
+  const user = await getStaffUser();
   if (!user) {
     return { error: "Natapos ang iyong sign-in. Paki-refresh ang pahina." };
   }

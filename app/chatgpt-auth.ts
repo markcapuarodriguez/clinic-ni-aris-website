@@ -44,6 +44,28 @@ export async function requireChatGPTUser(
   redirect(chatGPTSignInPath(returnTo));
 }
 
+export async function requireStaffUser(returnTo: string): Promise<ChatGPTUser> {
+  const user = await getStaffUser();
+  if (user) return user;
+
+  redirect(chatGPTSignInPath(returnTo));
+}
+
+export async function getStaffUser(): Promise<ChatGPTUser | null> {
+  const user = await getChatGPTUser();
+  if (user) return user;
+
+  if (process.env.ALLOW_PASSWORD_ONLY_STAFF === "true") {
+    return {
+      displayName: "Kawani ng Reyes Medical Clinic",
+      email: "cloudflare-staff@reyes-medical-clinic.local",
+      fullName: null,
+    };
+  }
+
+  return null;
+}
+
 export function chatGPTSignInPath(returnTo: string): string {
   const safeReturnTo = safeRelativeReturnPath(returnTo);
   return `${SIGN_IN_PATH}?return_to=${encodeURIComponent(safeReturnTo)}`;
