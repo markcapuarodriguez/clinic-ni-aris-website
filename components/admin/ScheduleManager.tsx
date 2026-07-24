@@ -3,8 +3,8 @@ import type { ClinicSchedule, Weekday } from "@/types/schedule";
 
 interface Props { schedule: ClinicSchedule; onSave: (schedule: ClinicSchedule) => void; }
 const DAYS: Array<{ id: Weekday; label: string }> = [
-  { id: 1, label: "Lunes" }, { id: 2, label: "Martes" }, { id: 3, label: "Miyerkules" },
-  { id: 4, label: "Huwebes" }, { id: 5, label: "Biyernes" }, { id: 6, label: "Sabado" }, { id: 0, label: "Linggo" },
+  { id: 1, label: "Monday" }, { id: 2, label: "Tuesday" }, { id: 3, label: "Wednesday" },
+  { id: 4, label: "Thursday" }, { id: 5, label: "Friday" }, { id: 6, label: "Saturday" }, { id: 0, label: "Sunday" },
 ];
 
 export function ScheduleManager({ schedule, onSave }: Props) {

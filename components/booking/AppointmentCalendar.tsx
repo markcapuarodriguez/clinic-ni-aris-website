@@ -13,7 +13,7 @@ interface Props {
 }
 
 const MONTHS = ["Enero", "Pebrero", "Marso", "Abril", "Mayo", "Hunyo", "Hulyo", "Agosto", "Setyembre", "Oktubre", "Nobyembre", "Disyembre"];
-const WEEKDAYS = ["Lin", "Lun", "Mar", "Miy", "Huw", "Biy", "Sab"];
+const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 export function AppointmentCalendar({ month, selectedDate, schedule, appointments, onMonthChange, onSelectDate }: Props) {
   const year = month.getFullYear();

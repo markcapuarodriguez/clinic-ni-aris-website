@@ -34,3 +34,5 @@
   - Responsive clinic header, calendars, forms, confirmation controls, staff navigation, dashboard cards, tables, and touch-friendly actions for small screens
   - Cloudflare deployment
   - Cloudflare Pages advanced-mode packaging, Node compatibility, and password-only staff identity fallback for deployments without ChatGPT identity headers
+  - English weekday labels
+  - Patient calendar and staff schedule editor display weekdays in English
