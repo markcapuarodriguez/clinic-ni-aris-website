@@ -3,7 +3,7 @@
 :root { --blue: #0759a6; --blue-dark: #063b70; --blue-soft: #eaf4ff; --green: #18794e; --ink: #17324d; --muted: #5f7182; --line: #cbd9e6; --background: #f5f9fc; }
 * { box-sizing: border-box; }
 html { background: var(--background); scroll-behavior: smooth; }
-body { margin: 0; color: var(--ink); background: var(--background); font-family: Arial, Helvetica, sans-serif; font-size: 18px; line-height: 1.55; }
+body { min-width: 0; margin: 0; color: var(--ink); background: var(--background); font-family: Arial, Helvetica, sans-serif; font-size: 18px; line-height: 1.55; overflow-wrap: break-word; }
 button, input, textarea { font: inherit; }
 button { cursor: pointer; }
 button:disabled { cursor: not-allowed; }
@@ -110,7 +110,7 @@ footer a { color: white; font-weight: 700; }
 .admin-nav button:hover { background: #edf4fa; }
 .admin-nav .active { color: white; background: var(--blue); }
 .admin-nav a:last-child { margin-top: auto; color: var(--blue); border: 1px solid #a9cbe8; }
-.admin-content { min-width: 0; }
+.admin-content, .booking-layout > *, .booking-details > * { min-width: 0; }
 .admin-welcome { display: flex; justify-content: space-between; gap: 20px; align-items: end; margin-bottom: 22px; }
 .admin-welcome h2 { margin: 0; font-size: 30px; }
 .admin-welcome p { margin: 4px 0 0; color: var(--muted); }
@@ -129,7 +129,7 @@ footer a { color: white; font-weight: 700; }
 .admin-empty strong { font-size: 22px; }
 .admin-empty p { color: var(--muted); }
 .admin-empty a { color: var(--blue); font-weight: 800; }
-.table-wrap { overflow-x: auto; }
+.table-wrap { max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; -webkit-overflow-scrolling: touch; }
 table { width: 100%; border-collapse: collapse; }
 th, td { padding: 15px 20px; border-bottom: 1px solid #e0e8ee; text-align: left; }
 th { color: var(--muted); background: #f7fafc; font-size: 14px; text-transform: uppercase; letter-spacing: .04em; }
@@ -190,33 +190,62 @@ td small { display: block; color: var(--muted); }
 @media (max-width: 800px) { .admin-shell { grid-template-columns: 1fr; } .admin-nav { min-height: 0; display: grid; grid-template-columns: repeat(3, 1fr); } .admin-nav a:last-child { margin-top: 0; } }
 @media (max-width: 600px) {
   body { font-size: 18px; }
-  .clinic-header { min-height: 96px; padding: 18px 16px; }
+  .clinic-header { min-height: 96px; display: grid; grid-template-columns: 82px minmax(0, 1fr); gap: 14px; padding: 16px; }
   .doctor-photo { width: 82px; height: 82px; border-width: 3px; border-radius: 14px; }
-  .clinic-address a { margin: 4px 0 0; }
-  .brand-mark { width: 52px; height: 52px; flex-basis: 52px; font-size: 26px; }
+  .clinic-address a { display: block; margin: 5px 0 0; }
+  .brand-mark { display: none; }
   .clinic-label { display: none; }
+  .clinic-header h1 { font-size: clamp(25px, 8vw, 34px); }
   .page-shell { width: min(100% - 20px, 1180px); margin-top: 16px; }
-  .announcement, .card { padding: 18px; border-radius: 14px; }
+  .announcement { align-items: flex-start; padding: 15px; }
+  .announcement, .card { border-radius: 14px; }
+  .card { padding: 18px 14px; }
+  .calendar-nav { grid-template-columns: 46px 1fr 46px; gap: 6px; }
+  .calendar-nav strong { font-size: 20px; }
+  .nav-button { width: 46px; height: 46px; }
   .calendar-grid { gap: 4px; }
   .calendar-day, .calendar-empty { min-height: 48px; border-radius: 9px; }
-  .calendar-day { font-size: 17px; }
+  .calendar-day { padding: 0; font-size: 16px; }
   .time-grid { grid-template-columns: repeat(2, 1fr); }
   .saved-message dl div { grid-template-columns: 1fr; gap: 2px; }
   .confirmation-layout { grid-template-columns: 1fr; }
   .confirmation-actions { grid-template-columns: 1fr; }
   footer { flex-direction: column; }
-  .admin-header { align-items: flex-start; }
+  .admin-header { min-height: 0; align-items: stretch; flex-direction: column; padding: 18px 16px; }
   .staff-gate-card { padding: 25px 20px; }
-  .staff-account { flex-direction: column; align-items: flex-end; gap: 8px; }
+  .staff-account { width: 100%; justify-content: space-between; align-items: center; gap: 12px; text-align: left; }
+  .staff-account a { flex: 0 0 auto; }
   .admin-shell { width: min(100% - 20px, 1280px); margin-top: 14px; }
-  .admin-nav { grid-template-columns: 1fr 1fr; }
+  .admin-nav { min-height: 0; display: flex; flex-direction: row; gap: 8px; padding: 10px; overflow-x: auto; overscroll-behavior-inline: contain; -webkit-overflow-scrolling: touch; }
+  .admin-nav a, .admin-nav button { min-height: 48px; flex: 0 0 auto; white-space: nowrap; }
+  .admin-nav a:last-child { margin: 0; }
   .admin-welcome { align-items: flex-start; flex-direction: column; }
   .summary-grid { grid-template-columns: 1fr 1fr; }
   .summary-card:last-child { grid-column: 1 / -1; }
+  .summary-card { min-height: 132px; padding: 15px; }
+  .summary-card strong { font-size: 36px; }
+  .admin-section-heading { align-items: flex-start; flex-direction: column; padding: 18px 16px; }
+  .admin-section-heading h2 { font-size: 22px; }
+  .table-wrap table { min-width: 620px; }
+  th, td { padding: 13px 14px; }
   .appointment-row { grid-template-columns: 1fr; }
-  .row-actions { justify-content: flex-start; }
+  .row-actions { justify-content: stretch; }
+  .row-actions button { flex: 1 1 135px; }
   .schedule-days label { grid-template-columns: 1fr; }
   .inline-control, .form-footer { align-items: stretch; flex-direction: column; }
+  .admin-form, .checkin-content { padding: 18px 14px; }
+  .closed-dates, .schedule-days { padding: 14px; }
+}
+
+@media (max-width: 420px) {
+  .clinic-header { grid-template-columns: 70px minmax(0, 1fr); gap: 11px; padding: 14px 12px; }
+  .doctor-photo { width: 70px; height: 76px; }
+  .clinic-header h1 { font-size: 25px; }
+  .clinic-address { font-size: 14px; }
+  .calendar-weekdays { font-size: 13px; }
+  .calendar-day, .calendar-empty { min-height: 43px; }
+  .summary-grid { grid-template-columns: 1fr; }
+  .summary-card:last-child { grid-column: auto; }
 }
 
 @media (prefers-reduced-motion: reduce) {
