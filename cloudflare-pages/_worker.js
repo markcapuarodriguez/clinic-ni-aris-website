@@ -3,7 +3,7 @@ import application from "./index.js";
 const STATIC_FILE_PATTERN =
   /\.(?:css|gif|ico|jpe?g|js|json|png|svg|webp|woff2?)$/i;
 
-export default {
+const pagesWorker = {
   async fetch(request, environment, context) {
     const url = new URL(request.url);
 
@@ -25,3 +25,5 @@ export default {
     return application.fetch(request, environment, context);
   },
 };
+
+export default pagesWorker;
