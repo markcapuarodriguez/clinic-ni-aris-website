@@ -26,3 +26,5 @@
   - Reyes Medical Clinic, 33 A. Dela Cruz Street, Tayabas City, Quezon, with a direct Google Maps shortcut
   - Clinic portrait
   - Responsive doctor portrait displayed prominently in the patient-page header
+  - Cloud persistence
+  - Appointments and clinic settings stored in the connected Convex deployment instead of browser-local storage

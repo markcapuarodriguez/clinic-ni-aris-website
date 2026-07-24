@@ -32,10 +32,16 @@ export function BookingPage() {
   const [patient, setPatient] = useState(EMPTY_PATIENT);
   const [errors, setErrors] = useState<string[]>([]);
   const [savedAppointment, setSavedAppointment] = useState<Appointment | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    const frame = window.requestAnimationFrame(() => setData(loadClinicData()));
-    return () => window.cancelAnimationFrame(frame);
+    let active = true;
+    loadClinicData()
+      .then((clinicData) => { if (active) setData(clinicData); })
+      .catch((error) => { if (active) setErrors([error instanceof Error ? error.message : "Hindi makakonekta sa online database."]); })
+      .finally(() => { if (active) setLoading(false); });
+    return () => { active = false; };
   }, []);
 
   const availableTimes = useMemo(() => selectedDate ? getAvailableTimes(selectedDate, data.settings.schedule, data.appointments) : [], [selectedDate, data]);
@@ -46,7 +52,7 @@ export function BookingPage() {
     setErrors([]);
   }
 
-  function submitBooking(event: React.FormEvent<HTMLFormElement>) {
+  async function submitBooking(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const draft: AppointmentDraft = { date: selectedDate, time: selectedTime, patient };
     const result = validateBooking(draft, data.settings.schedule, data.appointments);
@@ -66,10 +72,18 @@ export function BookingPage() {
       createdAt: now,
       updatedAt: now,
     };
-    setData(addAppointment(appointment));
-    setSavedAppointment(appointment);
-    setErrors([]);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    setSaving(true);
+    try {
+      const saved = await addAppointment(appointment);
+      setData((current) => ({ ...current, appointments: [...current.appointments, saved] }));
+      setSavedAppointment(saved);
+      setErrors([]);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (error) {
+      setErrors([error instanceof Error ? error.message : "Hindi ma-save ang appointment."]);
+    } finally {
+      setSaving(false);
+    }
   }
 
   function startAgain() {
@@ -93,7 +107,9 @@ export function BookingPage() {
           <span aria-hidden="true">!</span><div><strong>Paalala</strong><p>{data.settings.announcement}</p></div>
         </section>
 
-        {savedAppointment ? (
+        {loading ? (
+          <section className="card loading-card" aria-live="polite"><strong>Kumokonekta sa online iskedyul…</strong></section>
+        ) : savedAppointment ? (
           <BookingConfirmation appointment={savedAppointment} onStartAgain={startAgain} displayDate={displayDate} displayTime={displayTime} />
         ) : (
           <div className="booking-layout">
@@ -119,7 +135,7 @@ export function BookingPage() {
                     <label>Dahilan ng pagbisita <span>*</span><textarea value={patient.reason} onChange={(event) => setPatient({ ...patient, reason: event.target.value })} rows={3} required /></label>
                     <label>Adres ng email <small>(opsyonal)</small><input name="email" type="email" value={patient.email} onChange={(event) => setPatient({ ...patient, email: event.target.value })} autoComplete="email" /></label>
                     <div className="booking-summary"><strong>Napiling pagbisita</strong><p>{displayDate(selectedDate)} • {displayTime(selectedTime)}</p></div>
-                    <button type="submit" className="primary-button">Ipa-iskedyul ang pagbisita</button>
+                    <button type="submit" className="primary-button" disabled={saving}>{saving ? "Sine-save online…" : "Ipa-iskedyul ang pagbisita"}</button>
                     <p className="required-note">Ang may <span>*</span> ay kailangang sagutan.</p>
                   </form>
                 )}

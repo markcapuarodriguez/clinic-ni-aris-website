@@ -1,9 +1,14 @@
 import type { Appointment } from "@/types/appointment";
 import type { ClinicSettings } from "@/types/schedule";
-import { CLINIC_ADDRESS, CLINIC_NAME, DEFAULT_CLINIC_SETTINGS, REGULAR_WEEKLY_HOURS } from "./seed";
-
-const STORAGE_KEY = "clinic-appointment-booking";
-const STORAGE_VERSION = 3;
+import {
+  createClinicAppointment,
+  importLegacyClinicData,
+  loadPublicClinicData,
+  loadStaffClinicData,
+  removeClinicAppointment,
+  saveClinicAppointment,
+  saveClinicSettings,
+} from "@/app/actions/clinic";
 
 export interface ClinicData {
   version: number;
@@ -11,97 +16,44 @@ export interface ClinicData {
   settings: ClinicSettings;
 }
 
-function createInitialData(): ClinicData {
-  return {
-    version: STORAGE_VERSION,
-    appointments: [],
-    settings: structuredClone(DEFAULT_CLINIC_SETTINGS),
-  };
+export async function loadClinicData(): Promise<ClinicData> {
+  return loadPublicClinicData();
 }
 
-function isClinicData(value: unknown): value is ClinicData {
-  if (!value || typeof value !== "object") return false;
-  const data = value as Partial<ClinicData>;
-  return data.version === STORAGE_VERSION && Array.isArray(data.appointments) && Boolean(data.settings?.schedule);
+export async function loadAdminClinicData(): Promise<ClinicData> {
+  return loadStaffClinicData();
 }
 
-function migrateClinicData(value: unknown): ClinicData | null {
-  if (!value || typeof value !== "object") return null;
-  const data = value as Partial<ClinicData>;
-  if (![1, 2].includes(data.version ?? 0) || !Array.isArray(data.appointments) || !data.settings?.schedule) return null;
-
-  return {
-    version: STORAGE_VERSION,
-    appointments: data.appointments,
-    settings: {
-      ...data.settings,
-      clinicName: CLINIC_NAME,
-      clinicAddress: CLINIC_ADDRESS,
-      schedule: {
-        ...data.settings.schedule,
-        weeklyHours: data.version === 1 ? structuredClone(REGULAR_WEEKLY_HOURS) : data.settings.schedule.weeklyHours,
-      },
-    },
-  };
+export async function addAppointment(appointment: Appointment): Promise<Appointment> {
+  return createClinicAppointment(appointment);
 }
 
-export function loadClinicData(): ClinicData {
-  if (typeof window === "undefined") return createInitialData();
-  const saved = window.localStorage.getItem(STORAGE_KEY);
-  if (!saved) {
-    const initialData = createInitialData();
-    saveClinicData(initialData);
-    return initialData;
-  }
+export function updateClinicSettings(settings: ClinicSettings): Promise<ClinicData> {
+  return saveClinicSettings(settings);
+}
+
+export function updateAppointment(appointment: Appointment): Promise<ClinicData> {
+  return saveClinicAppointment(appointment);
+}
+
+export function deleteAppointment(appointmentId: string): Promise<ClinicData> {
+  return removeClinicAppointment(appointmentId);
+}
+
+export async function migrateLocalClinicData(): Promise<ClinicData | null> {
+  if (typeof window === "undefined") return null;
+  const saved = window.localStorage.getItem("clinic-appointment-booking");
+  if (!saved) return null;
   try {
-    const parsed: unknown = JSON.parse(saved);
-    if (isClinicData(parsed)) return parsed;
-    const migrated = migrateClinicData(parsed);
-    if (migrated) {
-      saveClinicData(migrated);
-      return migrated;
-    }
-    return createInitialData();
+    const data = JSON.parse(saved) as Partial<ClinicData>;
+    if (!Array.isArray(data.appointments) || !data.settings?.schedule) return null;
+    const migrated = await importLegacyClinicData({
+      appointments: data.appointments,
+      settings: data.settings,
+    });
+    window.localStorage.removeItem("clinic-appointment-booking");
+    return migrated;
   } catch {
-    return createInitialData();
+    return null;
   }
-}
-
-export function saveClinicData(data: ClinicData): void {
-  if (typeof window === "undefined") return;
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-}
-
-export function addAppointment(appointment: Appointment): ClinicData {
-  const data = loadClinicData();
-  const updated = { ...data, appointments: [...data.appointments, appointment] };
-  saveClinicData(updated);
-  return updated;
-}
-
-export function updateClinicSettings(settings: ClinicSettings): ClinicData {
-  const data = loadClinicData();
-  const updated = { ...data, settings };
-  saveClinicData(updated);
-  return updated;
-}
-
-export function updateAppointment(appointment: Appointment): ClinicData {
-  const data = loadClinicData();
-  const updated = {
-    ...data,
-    appointments: data.appointments.map((item) => item.id === appointment.id ? appointment : item),
-  };
-  saveClinicData(updated);
-  return updated;
-}
-
-export function deleteAppointment(appointmentId: string): ClinicData {
-  const data = loadClinicData();
-  const updated = {
-    ...data,
-    appointments: data.appointments.filter((item) => item.id !== appointmentId),
-  };
-  saveClinicData(updated);
-  return updated;
 }

@@ -47,6 +47,8 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, a:focus-visib
 .flow-card { opacity: .72; }
 .flow-card.active { opacity: 1; }
 .empty-hint { padding: 18px; margin: 0; border-radius: 12px; color: var(--muted); background: #f3f6f8; text-align: center; }
+.loading-card { text-align: center; color: var(--blue-dark); }
+.primary-button:disabled { cursor: wait; opacity: .7; }
 .selected-summary { margin: -10px 0 16px; color: var(--blue-dark); font-weight: 700; }
 .time-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 .time-button { min-height: 54px; border: 2px solid #91b7d8; border-radius: 12px; color: var(--blue-dark); background: white; font-weight: 700; }

@@ -8,7 +8,7 @@ import { CheckInPanel } from "./CheckInPanel";
 import { ScheduleManager } from "./ScheduleManager";
 import { getAvailableTimes } from "@/lib/appointments/rules";
 import { toDateKey } from "@/lib/dates/calendar";
-import { deleteAppointment, loadClinicData, updateAppointment, updateClinicSettings, type ClinicData } from "@/lib/storage/repository";
+import { deleteAppointment, loadAdminClinicData, migrateLocalClinicData, updateAppointment, updateClinicSettings, type ClinicData } from "@/lib/storage/repository";
 import { DEFAULT_CLINIC_SETTINGS } from "@/lib/storage/seed";
 import type { Appointment, AppointmentStatus } from "@/types/appointment";
 import type { ClinicSchedule } from "@/types/schedule";
@@ -30,9 +30,16 @@ function countAvailableSlots(data: ClinicData, days = 30): number {
 export function AdminDashboard({ staffName, signOutPath }: Props) {
   const [data, setData] = useState<ClinicData>({ version: 3, appointments: [], settings: DEFAULT_CLINIC_SETTINGS });
   const [tab, setTab] = useState<AdminTab>("dashboard");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   useEffect(() => {
-    const frame = window.requestAnimationFrame(() => setData(loadClinicData()));
-    return () => window.cancelAnimationFrame(frame);
+    let active = true;
+    loadAdminClinicData()
+      .then(async (clinicData) => (await migrateLocalClinicData()) ?? clinicData)
+      .then((clinicData) => { if (active) setData(clinicData); })
+      .catch((reason) => { if (active) setError(reason instanceof Error ? reason.message : "Hindi makakonekta sa online database."); })
+      .finally(() => { if (active) setLoading(false); });
+    return () => { active = false; };
   }, []);
 
   const summary = useMemo(() => {
@@ -48,17 +55,38 @@ export function AdminDashboard({ staffName, signOutPath }: Props) {
 
   const upcoming = useMemo(() => data.appointments.filter((item) => item.date >= toDateKey(new Date()) && item.status !== "cancelled").sort((a, b) => `${a.date}${a.time}`.localeCompare(`${b.date}${b.time}`)).slice(0, 5), [data]);
 
-  function changeStatus(appointment: Appointment, status: AppointmentStatus) {
-    setData(updateAppointment({ ...appointment, status, updatedAt: new Date().toISOString() }));
+  async function changeStatus(appointment: Appointment, status: AppointmentStatus) {
+    try {
+      setData(await updateAppointment({ ...appointment, status, updatedAt: new Date().toISOString() }));
+      setError("");
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : "Hindi ma-update ang appointment.");
+    }
   }
-  function removeAppointment(appointment: Appointment) {
-    if (window.confirm(`Burahin ang appointment ni ${appointment.patient.name}? Hindi na ito maibabalik.`)) setData(deleteAppointment(appointment.id));
+  async function removeAppointment(appointment: Appointment) {
+    if (!window.confirm(`Burahin ang appointment ni ${appointment.patient.name}? Hindi na ito maibabalik.`)) return;
+    try {
+      setData(await deleteAppointment(appointment.id));
+      setError("");
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : "Hindi mabura ang appointment.");
+    }
   }
-  function saveSchedule(schedule: ClinicSchedule) {
-    setData(updateClinicSettings({ ...data.settings, schedule }));
+  async function saveSchedule(schedule: ClinicSchedule) {
+    try {
+      setData(await updateClinicSettings({ ...data.settings, schedule }));
+      setError("");
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : "Hindi ma-save ang iskedyul.");
+    }
   }
-  function saveAnnouncement(announcement: string) {
-    setData(updateClinicSettings({ ...data.settings, announcement }));
+  async function saveAnnouncement(announcement: string) {
+    try {
+      setData(await updateClinicSettings({ ...data.settings, announcement }));
+      setError("");
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : "Hindi ma-save ang paalala.");
+    }
   }
 
   const navItems: Array<{ id: AdminTab; label: string }> = [
@@ -76,11 +104,13 @@ export function AdminDashboard({ staffName, signOutPath }: Props) {
           <Link href="/">Pahina ng Pasyente</Link>
         </nav>
         <section className="admin-content" id="admin-content" tabIndex={-1}>
-          {tab === "dashboard" && <DashboardOverview data={data} summary={summary} upcoming={upcoming} />}
-          {tab === "appointments" && <AppointmentManager appointments={data.appointments} onStatusChange={changeStatus} onDelete={removeAppointment} />}
-          {tab === "schedule" && <ScheduleManager schedule={data.settings.schedule} onSave={saveSchedule} />}
-          {tab === "checkin" && <CheckInPanel appointments={data.appointments} onCheckIn={(appointment) => changeStatus(appointment, "checked-in")} />}
-          {tab === "announcement" && <AnnouncementEditor announcement={data.settings.announcement} onSave={saveAnnouncement} />}
+          {error && <div className="error-box" role="alert">{error}</div>}
+          {loading && <section className="card loading-card" aria-live="polite"><strong>Kumokonekta sa online database…</strong></section>}
+          {!loading && tab === "dashboard" && <DashboardOverview data={data} summary={summary} upcoming={upcoming} />}
+          {!loading && tab === "appointments" && <AppointmentManager appointments={data.appointments} onStatusChange={changeStatus} onDelete={removeAppointment} />}
+          {!loading && tab === "schedule" && <ScheduleManager schedule={data.settings.schedule} onSave={saveSchedule} />}
+          {!loading && tab === "checkin" && <CheckInPanel appointments={data.appointments} onCheckIn={(appointment) => changeStatus(appointment, "checked-in")} />}
+          {!loading && tab === "announcement" && <AnnouncementEditor announcement={data.settings.announcement} onSave={saveAnnouncement} />}
         </section>
       </div>
     </main>
