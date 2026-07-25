@@ -38,3 +38,5 @@
   - Patient calendar and staff schedule editor display weekdays in English
   - English email field
   - Email address label, optional note, and validation message display in English
+  - Staff appointment visibility fix
+  - Staff session cookie is available to protected server-action requests while remaining signed, HTTP-only, strict same-site, and time-limited

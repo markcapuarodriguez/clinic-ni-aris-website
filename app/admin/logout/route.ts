@@ -6,6 +6,13 @@ export async function GET(request: Request) {
   response.cookies.set(STAFF_COOKIE_NAME, "", {
     httpOnly: true,
     maxAge: 0,
+    path: "/",
+    sameSite: "strict",
+    secure: process.env.NODE_ENV === "production",
+  });
+  response.cookies.set(STAFF_COOKIE_NAME, "", {
+    httpOnly: true,
+    maxAge: 0,
     path: "/admin",
     sameSite: "strict",
     secure: process.env.NODE_ENV === "production",

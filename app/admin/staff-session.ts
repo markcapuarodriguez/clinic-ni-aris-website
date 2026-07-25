@@ -27,7 +27,7 @@ export async function startStaffSession(email: string): Promise<void> {
   (await cookies()).set(STAFF_COOKIE_NAME, token, {
     httpOnly: true,
     maxAge: SESSION_LIFETIME_SECONDS,
-    path: "/admin",
+    path: "/",
     sameSite: "strict",
     secure: process.env.NODE_ENV === "production",
   });
