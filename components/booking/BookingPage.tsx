@@ -133,7 +133,7 @@ export function BookingPage() {
                     <label>Pangalan <span>*</span><input value={patient.name} onChange={(event) => setPatient({ ...patient, name: event.target.value })} autoComplete="name" required /></label>
                     <label>Numero ng telepono <span>*</span><input value={patient.phone} onChange={(event) => setPatient({ ...patient, phone: event.target.value })} autoComplete="tel" inputMode="tel" placeholder="Halimbawa: 09171234567" required /></label>
                     <label>Dahilan ng pagbisita <span>*</span><textarea value={patient.reason} onChange={(event) => setPatient({ ...patient, reason: event.target.value })} rows={3} required /></label>
-                    <label>Adres ng email <small>(opsyonal)</small><input name="email" type="email" value={patient.email} onChange={(event) => setPatient({ ...patient, email: event.target.value })} autoComplete="email" /></label>
+                    <label>Email address <small>(optional)</small><input name="email" type="email" value={patient.email} onChange={(event) => setPatient({ ...patient, email: event.target.value })} autoComplete="email" /></label>
                     <div className="booking-summary"><strong>Napiling pagbisita</strong><p>{displayDate(selectedDate)} • {displayTime(selectedTime)}</p></div>
                     <button type="submit" className="primary-button" disabled={saving}>{saving ? "Sine-save online…" : "Ipa-iskedyul ang pagbisita"}</button>
                     <p className="required-note">Ang may <span>*</span> ay kailangang sagutan.</p>

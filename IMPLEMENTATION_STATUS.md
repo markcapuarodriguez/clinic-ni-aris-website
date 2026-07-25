@@ -36,3 +36,5 @@
   - Cloudflare Pages advanced-mode packaging, Node compatibility, and password-only staff identity fallback for deployments without ChatGPT identity headers
   - English weekday labels
   - Patient calendar and staff schedule editor display weekdays in English
+  - English email field
+  - Email address label, optional note, and validation message display in English

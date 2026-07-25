@@ -45,7 +45,7 @@ export function validateBooking(
   if (!/^(?:\+63|0)9\d{9}$/.test(phone)) errors.push("Maglagay ng wastong numero ng telepono.");
   if (!draft.patient.reason.trim()) errors.push("Ilagay ang dahilan ng pagbisita.");
   if (draft.patient.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(draft.patient.email.trim())) {
-    errors.push("Maglagay ng wastong email address o iwan itong walang laman.");
+    errors.push("Enter a valid email address or leave this field blank.");
   }
   if (!fromDateKey(draft.date) || isPastDate(draft.date)) errors.push("Pumili ng kasalukuyan o susunod na petsa.");
   if (!getAvailableTimes(draft.date, schedule, appointments).includes(draft.time)) {
